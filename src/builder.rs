@@ -190,7 +190,6 @@ impl<'a> QueryBuilder<'a> {
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
-        info!("Network return:\n {}\n", resp_text);
         let resp_json: Value = serde_json::from_str(&resp_text)?;
         if let Some(ret_code) = resp_json["code"].as_i64() {
             info!("resp code: {:?}", ret_code);    
@@ -205,7 +204,6 @@ impl<'a> QueryBuilder<'a> {
         }
         let data_json = Self::json_reformat(resp_json)?;
         let data_str = serde_json::to_string(&data_json)?;
-        info!("data_str: {}", data_str);
         if data_str == "" || data_str == "[]"{
             return Err(TushareError::EmptyError)
         }
