@@ -223,9 +223,13 @@ impl<'a> QueryBuilder<'a> {
             "Request text:\n {:#?}\n",
             serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
         );
+
+        let body = serde_json::to_string(&tushare_request)?;
+
         let resp_text = client
             .post(url)
-            .body(tushare_request.to_string())
+            .header("Content-Type", "application/json")
+            .body(body)
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
