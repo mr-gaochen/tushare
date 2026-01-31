@@ -186,11 +186,10 @@ impl<'a> QueryBuilder<'a> {
         info!("Request url:{:}",url);
         let resp_text = client
             .post(url)
-            .body(tushare_request.to_string())
+            .json(&tushare_request)
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
-        info!("Response text:{:#?}",resp_text);
         let resp_json: Value = serde_json::from_str(&resp_text)?;
         if let Some(ret_code) = resp_json["code"].as_i64() {
             info!("resp code: {:?}", ret_code);
@@ -223,13 +222,9 @@ impl<'a> QueryBuilder<'a> {
             "Request text:\n {:#?}\n",
             serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
         );
-
-        let body = serde_json::to_string(&tushare_request)?;
-
         let resp_text = client
             .post(url)
-            .header("Content-Type", "application/json")
-            .body(body)
+            .json(&tushare_request)
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
