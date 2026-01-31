@@ -228,7 +228,6 @@ impl<'a> QueryBuilder<'a> {
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
-        info!("Response text:{:#?}",resp_text);
         let resp_json: Value = serde_json::from_str(&resp_text)?;
         if let Some(ret_code) = resp_json["code"].as_i64() {
             info!("resp code: {:?}", ret_code);
