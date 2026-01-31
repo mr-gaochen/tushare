@@ -181,8 +181,9 @@ impl<'a> QueryBuilder<'a> {
             serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
         );
         let client = Client::new();
-        info!("Request url:{:}",self.tushare.api_endpoint);
-        let url = format!("{}?{}", self.tushare.api_endpoint,self.api_name );
+
+        let url = format!("{}/{}", self.tushare.api_endpoint,self.api_name );
+        info!("Request url:{:}",url);
         let resp_text = client
             .post(url)
             .body(tushare_request.to_string())
@@ -218,9 +219,8 @@ impl<'a> QueryBuilder<'a> {
             serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
         );
         let client = Client::new();
-           info!("Request url:{:}",self.tushare.api_endpoint);
-           let url = format!("{}?{}", self.tushare.api_endpoint,self.api_name );
-
+           let url = format!("{}/{}", self.tushare.api_endpoint,self.api_name );
+        info!("Request url:{:}",url);
         let resp_text = client
             .post(url)
             .body(tushare_request.to_string())
