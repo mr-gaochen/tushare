@@ -181,6 +181,7 @@ impl<'a> QueryBuilder<'a> {
             serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
         );
         let client = Client::new();
+        info!("Request url:{:}",self.tushare.api_endpoint);
         let resp_text = client
             .post(self.tushare.api_endpoint.clone())
             .body(tushare_request.to_string())
