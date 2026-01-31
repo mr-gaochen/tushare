@@ -182,8 +182,9 @@ impl<'a> QueryBuilder<'a> {
         );
         let client = Client::new();
         info!("Request url:{:}",self.tushare.api_endpoint);
+        let url = format!("{}?{}", self.tushare.api_endpoint,self.api_name );
         let resp_text = client
-            .post(self.tushare.api_endpoint.clone())
+            .post(url)
             .body(tushare_request.to_string())
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
@@ -218,8 +219,10 @@ impl<'a> QueryBuilder<'a> {
         );
         let client = Client::new();
            info!("Request url:{:}",self.tushare.api_endpoint);
+           let url = format!("{}?{}", self.tushare.api_endpoint,self.api_name );
+
         let resp_text = client
-            .post(self.tushare.api_endpoint.clone())
+            .post(url)
             .body(tushare_request.to_string())
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
