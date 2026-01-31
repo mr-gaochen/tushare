@@ -177,7 +177,7 @@ impl<'a> QueryBuilder<'a> {
     pub fn query(self: &Self) -> Result<DataFrame, TushareError> {
         let tushare_request = self.build();
         info!(
-            "Request text:\n {}\n",
+            "Request text:\n {:#?}\n",
             serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
         );
         let client = Client::new();
@@ -190,6 +190,7 @@ impl<'a> QueryBuilder<'a> {
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
+        info!("Response text:{:#?}",resp_text);
         let resp_json: Value = serde_json::from_str(&resp_text)?;
         if let Some(ret_code) = resp_json["code"].as_i64() {
             info!("resp code: {:?}", ret_code);
@@ -214,19 +215,21 @@ impl<'a> QueryBuilder<'a> {
 
     pub fn query_to_string(self: &Self) -> Result<String, TushareError> {
         let tushare_request = self.build();
-        info!(
-            "Request text:\n {}\n",
-            serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
-        );
+
         let client = Client::new();
            let url = format!("{}/{}", self.tushare.api_endpoint,self.api_name );
         info!("Request url:{:}",url);
+        info!(
+            "Request text:\n {:#?}\n",
+            serde_json::to_string(&tushare_request).unwrap_or("to str error".to_string())
+        );
         let resp_text = client
             .post(url)
             .body(tushare_request.to_string())
             .send()? // sending network error
             .error_for_status()? // 400 or other http error
             .text()?;
+        info!("Response text:{:#?}",resp_text);
         let resp_json: Value = serde_json::from_str(&resp_text)?;
         if let Some(ret_code) = resp_json["code"].as_i64() {
             info!("resp code: {:?}", ret_code);
