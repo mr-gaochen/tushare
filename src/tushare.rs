@@ -17,7 +17,7 @@ impl Tushare{
     /// Apply it before you do any access 
     pub fn new(token: &str) -> Self {
         Tushare{ token : token.to_string(),
-                 api_endpoint: "http://api.tushare.pro".to_string()}
+                 api_endpoint: "https://jiaoch.site".to_string()}
     }
 
     /// Create a QueryBuilder to actually build and process the query
